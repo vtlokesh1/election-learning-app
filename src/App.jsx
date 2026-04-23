@@ -9,10 +9,13 @@ import Timeline from './components/Timeline';
 import VotingSteps from './components/VotingSteps';
 import Quiz from './components/Quiz';
 import MockEVM from './components/MockEVM';
+import BoothLocator from './components/BoothLocator';
 import Testimonials from './components/Testimonials';
 import FAQ from './components/FAQ';
 import CTASection from './components/CTASection';
 import Footer from './components/Footer';
+import GeminiChatbot from './components/GeminiChatbot';
+import { LanguageProvider } from './contexts/LanguageContext';
 
 export default function App() {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -39,6 +42,7 @@ export default function App() {
   }, [loading]);
 
   return (
+    <LanguageProvider>
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 font-sans selection:bg-pink-500 selection:text-white transition-colors duration-700 overflow-x-hidden">
       <CustomCursor />
       
@@ -53,6 +57,7 @@ export default function App() {
           <Statistics />
           <Timeline />
           <VotingSteps />
+          <BoothLocator />
           <Quiz />
           <MockEVM />
           <Testimonials />
@@ -61,7 +66,9 @@ export default function App() {
         </main>
         
         <Footer />
+        <GeminiChatbot />
       </div>
     </div>
+    </LanguageProvider>
   );
 }

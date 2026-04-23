@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function CTASection() {
+  const { t } = useLanguage();
   return (
     <section className="py-32 px-6 relative overflow-hidden">
       <div className="max-w-5xl mx-auto bg-gradient-to-br from-blue-600 via-pink-600 to-violet-600 rounded-[3rem] p-12 md:p-20 text-center relative shadow-2xl overflow-hidden group">
@@ -19,7 +21,7 @@ export default function CTASection() {
             viewport={{ once: true }}
             className="text-4xl md:text-6xl font-black text-white mb-6 leading-tight"
           >
-            Ready to Make a Difference?
+            {t('cta.title')}
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -28,7 +30,7 @@ export default function CTASection() {
             transition={{ delay: 0.2 }}
             className="text-xl md:text-2xl text-white/80 max-w-2xl mx-auto mb-10 font-medium"
           >
-            Your voice is the foundation of democracy. Register, learn, and cast your vote in the next election.
+            {t('cta.desc')}
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -40,7 +42,7 @@ export default function CTASection() {
               onClick={() => document.getElementById('evm')?.scrollIntoView({ behavior: 'smooth' })}
               className="px-10 py-5 bg-white text-slate-900 rounded-full font-black text-lg hover:scale-105 transition-transform shadow-[0_0_40px_rgba(255,255,255,0.4)] flex items-center gap-3 mx-auto"
             >
-              Practice Voting Now <ArrowRight size={20} />
+              {t('cta.btn')} <ArrowRight size={20} />
             </button>
           </motion.div>
         </div>

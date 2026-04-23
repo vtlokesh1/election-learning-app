@@ -1,35 +1,38 @@
 import { motion } from 'framer-motion';
 import { ShieldCheck, HeartHandshake, Scale } from 'lucide-react';
 import { cn } from '../lib/utils';
-
-const cards = [
-  {
-    icon: ShieldCheck,
-    title: "Protect Your Rights",
-    desc: "Voting is your most powerful tool to protect your fundamental rights and shape policies that affect your daily life.",
-    color: "text-blue-500",
-    bg: "bg-blue-500/10",
-    border: "border-blue-500/20"
-  },
-  {
-    icon: Scale,
-    title: "Ensure Equality",
-    desc: "Every vote carries the exact same weight. The ballot box is the ultimate equalizer in our democratic society.",
-    color: "text-pink-500",
-    bg: "bg-pink-500/10",
-    border: "border-pink-500/20"
-  },
-  {
-    icon: HeartHandshake,
-    title: "Build the Future",
-    desc: "Your vote decides who builds our schools, hospitals, and infrastructure for the next generation.",
-    color: "text-violet-500",
-    bg: "bg-violet-500/10",
-    border: "border-violet-500/20"
-  }
-];
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function WhyVotingMatters() {
+  const { t } = useLanguage();
+
+  const cards = [
+    {
+      icon: ShieldCheck,
+      title: t('whyVoting.c1_title'),
+      desc: t('whyVoting.c1_desc'),
+      color: "text-blue-500",
+      bg: "bg-blue-500/10",
+      border: "border-blue-500/20"
+    },
+    {
+      icon: Scale,
+      title: t('whyVoting.c2_title'),
+      desc: t('whyVoting.c2_desc'),
+      color: "text-pink-500",
+      bg: "bg-pink-500/10",
+      border: "border-pink-500/20"
+    },
+    {
+      icon: HeartHandshake,
+      title: t('whyVoting.c3_title'),
+      desc: t('whyVoting.c3_desc'),
+      color: "text-violet-500",
+      bg: "bg-violet-500/10",
+      border: "border-violet-500/20"
+    }
+  ];
+
   return (
     <section id="impact" className="py-32 px-6 relative">
       <div className="max-w-7xl mx-auto">
@@ -40,11 +43,9 @@ export default function WhyVotingMatters() {
           className="text-center mb-20"
         >
           <h2 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white mb-6">
-            Why Your Vote <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500">Matters</span>
+            {t('whyVoting.title')}
           </h2>
-          <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-            A single vote has the power to shift history. Discover the monumental impact of participating in democracy.
-          </p>
+          <div className="w-24 h-1 bg-gradient-to-r from-pink-500 to-violet-500 mx-auto rounded-full" />
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-8">

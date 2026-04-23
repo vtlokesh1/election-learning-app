@@ -2,16 +2,18 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Minus } from 'lucide-react';
 import { cn } from '../lib/utils';
-
-const faqs = [
-  { q: "What is the minimum age to vote?", a: "In India, you must be at least 18 years old on January 1st of the year of the revision of electoral rolls to be eligible to vote." },
-  { q: "What is NOTA?", a: "NOTA stands for 'None of the Above'. It allows voters to officially register a vote of rejection for all candidates contesting in the election, promoting accountability." },
-  { q: "Can I vote without a voter ID card?", a: "Yes, you can vote if your name is on the electoral roll. You will need to show alternative officially approved photo ID proofs like a Passport, Driving License, or Aadhar Card." },
-  { q: "How is EVM security maintained?", a: "EVMs are standalone machines not connected to any network or internet. They undergo rigorous multi-level checks, mock polls, and are sealed in the presence of political representatives." }
-];
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function FAQ() {
+  const { t } = useLanguage();
   const [openIndex, setOpenIndex] = useState(null);
+
+  const faqs = [
+    { q: t('faq.q1'), a: t('faq.a1') },
+    { q: t('faq.q2'), a: t('faq.a2') },
+    { q: t('faq.q3'), a: t('faq.a3') },
+    { q: t('faq.q4'), a: t('faq.a4') }
+  ];
 
   return (
     <section id="faq" className="py-32 px-6 max-w-4xl mx-auto">
@@ -22,7 +24,7 @@ export default function FAQ() {
         className="text-center mb-16"
       >
         <h2 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white mb-6">
-          Frequently Asked <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-violet-500">Questions</span>
+          {t('faq.title').split(' ').slice(0, -1).join(' ')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-violet-500">{t('faq.title').split(' ').pop()}</span>
         </h2>
       </motion.div>
 

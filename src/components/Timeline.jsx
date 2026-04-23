@@ -1,43 +1,46 @@
 import { motion } from 'framer-motion';
 import { UserPlus, FileText, Megaphone, BarChart } from 'lucide-react';
 import { cn } from '../lib/utils';
-
-const timeline = [
-  {
-    title: 'Registration',
-    desc: 'Citizens register to become eligible voters.',
-    icon: UserPlus,
-    color: 'text-blue-500',
-    bg: 'from-blue-500/20 to-cyan-500/20',
-    border: 'border-blue-500/50'
-  },
-  {
-    title: 'Nomination',
-    desc: 'Candidates file their nomination papers.',
-    icon: FileText,
-    color: 'text-violet-500',
-    bg: 'from-violet-500/20 to-purple-500/20',
-    border: 'border-violet-500/50'
-  },
-  {
-    title: 'Campaigning',
-    desc: 'Candidates present their manifestos to the public.',
-    icon: Megaphone,
-    color: 'text-pink-500',
-    bg: 'from-pink-500/20 to-rose-500/20',
-    border: 'border-pink-500/50'
-  },
-  {
-    title: 'Results',
-    desc: 'Votes are counted and winners are declared.',
-    icon: BarChart,
-    color: 'text-emerald-500',
-    bg: 'from-emerald-500/20 to-teal-500/20',
-    border: 'border-emerald-500/50'
-  }
-];
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function Timeline() {
+  const { t } = useLanguage();
+
+  const timeline = [
+    {
+      title: t('timeline.p1_title'),
+      desc: t('timeline.p1_desc'),
+      icon: UserPlus,
+      color: 'text-blue-500',
+      bg: 'from-blue-500/20 to-cyan-500/20',
+      border: 'border-blue-500/50'
+    },
+    {
+      title: t('timeline.p2_title'),
+      desc: t('timeline.p2_desc'),
+      icon: FileText,
+      color: 'text-violet-500',
+      bg: 'from-violet-500/20 to-purple-500/20',
+      border: 'border-violet-500/50'
+    },
+    {
+      title: t('timeline.p3_title'),
+      desc: t('timeline.p3_desc'),
+      icon: Megaphone,
+      color: 'text-pink-500',
+      bg: 'from-pink-500/20 to-rose-500/20',
+      border: 'border-pink-500/50'
+    },
+    {
+      title: t('timeline.p4_title'),
+      desc: t('timeline.p4_desc'),
+      icon: BarChart,
+      color: 'text-emerald-500',
+      bg: 'from-emerald-500/20 to-teal-500/20',
+      border: 'border-emerald-500/50'
+    }
+  ];
+
   return (
     <section id="timeline" className="py-32 px-6 max-w-7xl mx-auto relative z-10">
       <motion.div
@@ -47,11 +50,9 @@ export default function Timeline() {
         className="text-center mb-24"
       >
         <h2 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white mb-6">
-          The Election <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-emerald-500">Timeline</span>
+          {t('timeline.title')}
         </h2>
-        <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-          Follow the journey of an election from the first voter registration to the final result declaration.
-        </p>
+        <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-emerald-500 mx-auto rounded-full mb-6" />
       </motion.div>
 
       <div className="relative">

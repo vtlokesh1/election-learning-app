@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, Lock, ShieldCheck } from 'lucide-react';
 import { cn } from '../lib/utils';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const candidates = [
   { name: 'Candidate A', party: 'Party X', symbol: '🌟' },
@@ -10,6 +11,7 @@ const candidates = [
 ];
 
 export default function MockEVM() {
+  const { t } = useLanguage();
   const [selectedCandidate, setSelectedCandidate] = useState('');
   const [showEvmPopup, setShowEvmPopup] = useState(false);
   const [pendingCandidate, setPendingCandidate] = useState('');
@@ -43,7 +45,7 @@ export default function MockEVM() {
           className="text-center mb-20"
         >
           <h2 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white mb-6">
-            Secure Voting <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-500">Simulator</span>
+            {t('evm.title').split(' ')[0]} {t('evm.title').split(' ')[1]} <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-500">{t('evm.title').split(' ')[2] || ''}</span>
           </h2>
           <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
             Experience the tactile, secure process of casting a vote on a realistic Mock EVM interface.
@@ -68,11 +70,11 @@ export default function MockEVM() {
               </div>
               <div className="flex items-center gap-6 bg-slate-200 dark:bg-slate-950 px-6 py-3 rounded-full shadow-inner border border-white/50 dark:border-white/5">
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] uppercase font-bold text-slate-400">Ready</span>
+                  <span className="text-[10px] uppercase font-bold text-slate-400">{t('evm.statusReady')}</span>
                   <div className={cn("w-3 h-3 rounded-full transition-all duration-300", !isLocked ? "bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.8)]" : "bg-slate-400 dark:bg-slate-700")} />
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] uppercase font-bold text-slate-400">Voted</span>
+                  <span className="text-[10px] uppercase font-bold text-slate-400">{t('evm.statusVoted')}</span>
                   <div className={cn("w-3 h-3 rounded-full transition-all duration-300", isLocked ? "bg-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.8)] animate-pulse" : "bg-slate-400 dark:bg-slate-700")} />
                 </div>
               </div>
@@ -108,6 +110,7 @@ export default function MockEVM() {
                     <button
                       disabled={isLocked}
                       onClick={() => handleVoteClick(candidate.name)}
+                      aria-label={`Vote for ${candidate.name}`}
                       className={cn(
                         "relative w-16 h-12 md:w-24 md:h-16 rounded-xl flex-shrink-0 shadow-[0_8px_0_rgba(0,0,0,0.2)] transition-all duration-100 border-2 active:shadow-[0_0px_0_rgba(0,0,0,0)] active:translate-y-2",
                         isLocked 
@@ -135,10 +138,10 @@ export default function MockEVM() {
                   </div>
                   <CheckCircle className="mx-auto text-emerald-500 mb-4" size={48} />
                   <h3 className="font-black text-emerald-700 dark:text-emerald-400 text-2xl mb-2">
-                    Vote Successfully Recorded!
+                    {t('evm.successTitle')}
                   </h3>
                   <p className="text-emerald-600 dark:text-emerald-300 font-medium">
-                    Your choice for <span className="font-bold">"{selectedCandidate}"</span> has been securely logged. The EVM is now locked.
+                    {t('evm.successDesc')} <span className="font-bold">"{selectedCandidate}"</span>.
                   </p>
                   <div className="mt-6 inline-flex items-center gap-2 text-emerald-600/60 dark:text-emerald-400/60 text-sm font-bold uppercase tracking-widest">
                     <Lock size={16} /> Secure Transaction
@@ -167,9 +170,9 @@ export default function MockEVM() {
                 <div className="w-20 h-20 bg-blue-500/10 text-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
                   <ShieldCheck size={40} />
                 </div>
-                <h3 className="text-3xl font-black text-slate-900 dark:text-white mb-4">Confirm Selection</h3>
+                <h3 className="text-3xl font-black text-slate-900 dark:text-white mb-4">{t('evm.confirmTitle')}</h3>
                 <p className="text-slate-600 dark:text-slate-400 text-lg mb-10">
-                  You are about to cast your official vote for <br/>
+                  {t('evm.confirmDesc1')} <br/>
                   <span className="font-black text-2xl text-slate-900 dark:text-white block mt-4 bg-slate-100 dark:bg-slate-800 py-3 rounded-xl border border-slate-200 dark:border-slate-700">{pendingCandidate}</span>
                 </p>
                 <div className="flex gap-4 justify-center">
@@ -180,14 +183,14 @@ export default function MockEVM() {
                     }}
                     className="px-6 py-4 rounded-xl font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors flex-1"
                   >
-                    Cancel
+                    {t('evm.btnCancel')}
                   </button>
                   <button 
                     onClick={confirmVote}
                     className="px-6 py-4 rounded-xl font-bold bg-blue-500 text-white hover:bg-blue-400 transition-colors shadow-lg shadow-blue-500/30 flex-1 relative overflow-hidden group"
                   >
                     <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                    <span className="relative z-10">Cast Vote</span>
+                    <span className="relative z-10">{t('evm.btnCast')}</span>
                   </button>
                 </div>
               </motion.div>

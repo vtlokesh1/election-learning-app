@@ -1,27 +1,30 @@
 import { motion } from 'framer-motion';
-
-const testimonials = [
-  {
-    name: "Aarav S.",
-    role: "First-time Voter",
-    content: "This app made understanding the EVM process incredibly simple. I feel completely confident heading to the polls for the first time!",
-    avatar: "bg-blue-500"
-  },
-  {
-    name: "Priya M.",
-    role: "Civic Educator",
-    content: "An absolute masterpiece of design. The interactive timeline is exactly what my students needed to visualize the electoral process.",
-    avatar: "bg-pink-500"
-  },
-  {
-    name: "Rahul T.",
-    role: "Senior Citizen",
-    content: "Very clear and easy to read. The dark mode is gentle on the eyes, and the quiz was surprisingly fun to complete.",
-    avatar: "bg-violet-500"
-  }
-];
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function Testimonials() {
+  const { t } = useLanguage();
+
+  const testimonials = [
+    {
+      name: "Aarav S.",
+      role: "First-time Voter",
+      content: t('testimonials.t1'),
+      avatar: "bg-blue-500"
+    },
+    {
+      name: "Priya M.",
+      role: "Civic Educator",
+      content: t('testimonials.t2'),
+      avatar: "bg-pink-500"
+    },
+    {
+      name: "Rahul T.",
+      role: "Senior Citizen",
+      content: t('testimonials.t3'),
+      avatar: "bg-violet-500"
+    }
+  ];
+
   return (
     <section className="py-32 px-6 relative overflow-hidden">
       {/* Background glow */}
@@ -35,7 +38,7 @@ export default function Testimonials() {
           className="text-center mb-20"
         >
           <h2 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white mb-6">
-            Voices of the <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-pink-500">People</span>
+            {t('testimonials.title').split(' ').slice(0, -1).join(' ')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-pink-500">{t('testimonials.title').split(' ').pop()}</span>
           </h2>
         </motion.div>
 

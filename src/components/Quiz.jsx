@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BadgeHelp, CheckCircle, Trophy } from 'lucide-react';
+import { BadgeHelp, CheckCircle, Trophy, Save } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { cn } from '../lib/utils';
+import { db } from '../lib/firebase';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const quiz = [
   { question: "What is the minimum voting age in India?", options: ["16", "18", "21", "25"], correct: "18" },
@@ -11,8 +13,11 @@ const quiz = [
 ];
 
 export default function Quiz() {
+  const { t } = useLanguage();
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [hasFinished, setHasFinished] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
 
   const answeredCount = Object.keys(selectedAnswers).length;
   const isQuizComplete = answeredCount === quiz.length;
@@ -22,6 +27,31 @@ export default function Quiz() {
     setHasFinished(true);
     if (score === quiz.length) {
       triggerConfetti();
+    }
+  };
+
+  const saveScoreToFirebase = async () => {
+    if (!db) return; // Prevent error if Firebase isn't configured
+    setIsSaving(true);
+    try {
+      // Dynamically import Firestore helpers so tests/builds without `firebase` won't fail
+      const firestore = await import('firebase/firestore').catch(() => null);
+      if (!firestore) {
+        console.warn('Firestore not available; skipping save.');
+        setIsSaving(false);
+        return;
+      }
+      const { collection, addDoc, serverTimestamp } = firestore;
+      await addDoc(collection(db, 'quizScores'), {
+        score,
+        total: quiz.length,
+        timestamp: serverTimestamp(),
+      });
+      setSaveSuccess(true);
+    } catch (error) {
+      console.error('Error saving score:', error);
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -50,7 +80,7 @@ export default function Quiz() {
           className="text-center"
         >
           <h2 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white mb-6">
-            Test Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-orange-500">Knowledge</span>
+            {t('quiz.title1')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-orange-500">{t('quiz.title2')}</span>
           </h2>
         </motion.div>
         
@@ -63,7 +93,7 @@ export default function Quiz() {
         >
           <div className="flex justify-between text-slate-600 dark:text-slate-300 mb-4 font-bold text-lg">
             <span>Progress: {answeredCount}/{quiz.length}</span>
-            <span>Score: <span className="text-pink-500 font-black">{score}</span></span>
+            <span>{t('quiz.score')} <span className="text-pink-500 font-black">{score}</span></span>
           </div>
           <div className="w-full bg-slate-200 dark:bg-slate-900 h-4 rounded-full overflow-hidden shadow-inner">
             <motion.div 
@@ -155,9 +185,9 @@ export default function Quiz() {
                         )}
                       >
                         {selectedAnswers[index] === item.correct ? (
-                          <><CheckCircle size={24} className="flex-shrink-0" /><span className="font-bold text-lg">Brilliant! That's correct.</span></>
+                          <><CheckCircle size={24} className="flex-shrink-0" /><span className="font-bold text-lg">{t('quiz.success')}</span></>
                         ) : (
-                          <><BadgeHelp size={24} className="flex-shrink-0" /><span className="font-bold text-lg">Not quite. The correct answer is {item.correct}.</span></>
+                          <><BadgeHelp size={24} className="flex-shrink-0" /><span className="font-bold text-lg">{t('quiz.fail')} {item.correct}.</span></>
                         )}
                       </motion.div>
                     )}
@@ -210,19 +240,36 @@ export default function Quiz() {
             
             <p className="text-xl text-slate-500 dark:text-slate-400 font-medium max-w-md mx-auto mb-10">
               {score === quiz.length 
-                ? "You're an absolute expert on elections! Your civic knowledge is world-class."
-                : "Every step towards learning about democracy makes our nation stronger."}
+                ? t('quiz.msgExpert')
+                : t('quiz.msgGood')}
             </p>
 
-            <button
-              onClick={() => {
-                setSelectedAnswers({});
-                setHasFinished(false);
-              }}
-              className="px-8 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-full font-bold text-lg hover:scale-105 transition-transform shadow-xl"
-            >
-              Take Quiz Again
-            </button>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button
+                onClick={() => {
+                  setSelectedAnswers({});
+                  setHasFinished(false);
+                  setSaveSuccess(false);
+                }}
+                className="px-8 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-full font-bold text-lg hover:scale-105 transition-transform shadow-xl outline-none focus-visible:ring-4 focus-visible:ring-slate-500/50"
+              >
+                {t('quiz.btnAgain')}
+              </button>
+              
+              <button
+                onClick={saveScoreToFirebase}
+                disabled={isSaving || saveSuccess}
+                className="px-8 py-4 bg-blue-500 text-white rounded-full font-bold text-lg hover:bg-blue-600 transition-colors shadow-xl disabled:opacity-50 disabled:hover:bg-blue-500 flex items-center justify-center gap-2 outline-none focus-visible:ring-4 focus-visible:ring-blue-500/50"
+              >
+                {isSaving ? (
+                  <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                ) : saveSuccess ? (
+                  <><CheckCircle size={20} /> {t('quiz.btnSaved')}</>
+                ) : (
+                  <><Save size={20} /> {t('quiz.btnSave')}</>
+                )}
+              </button>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

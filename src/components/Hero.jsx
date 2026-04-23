@@ -1,8 +1,10 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ChevronDown, Sparkles } from 'lucide-react';
 import { useRef } from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function Hero() {
+  const { t } = useLanguage();
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -55,7 +57,7 @@ export default function Hero() {
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/50 dark:bg-white/10 backdrop-blur-md border border-slate-200 dark:border-white/20 mb-8 text-sm font-medium text-slate-800 dark:text-slate-200"
         >
           <Sparkles size={16} className="text-pink-500" />
-          <span>The Future of Civic Education</span>
+          <span>{t('hero.subtitle')}</span>
         </motion.div>
 
         <motion.h1
@@ -64,10 +66,10 @@ export default function Hero() {
           transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="text-6xl md:text-8xl font-black mb-8 tracking-tighter leading-tight"
         >
-          <span className="text-slate-900 dark:text-white">Empower Your </span>
+          <span className="text-slate-900 dark:text-white">{t('hero.titlePart1')} </span>
           <br className="hidden md:block" />
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-pink-500 to-violet-500 animate-gradient-x">
-            Democratic Voice
+            {t('hero.titlePart2')}
           </span>
         </motion.h1>
 
@@ -77,8 +79,7 @@ export default function Hero() {
           transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
           className="text-xl md:text-2xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto mb-12 font-light leading-relaxed"
         >
-          Experience an award-winning, interactive journey through the electoral process. 
-          Learn, engage, and cast your mock vote in our hyper-realistic simulator.
+          {t('hero.description')}
         </motion.p>
 
         <motion.div
@@ -92,14 +93,14 @@ export default function Hero() {
             className="group relative px-8 py-4 rounded-full font-bold text-white bg-slate-900 dark:bg-white dark:text-slate-900 overflow-hidden shadow-2xl hover:scale-105 transition-transform duration-300 w-full sm:w-auto"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-pink-500 to-violet-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <span className="relative z-10 group-hover:text-white transition-colors duration-300">Launch Simulator</span>
+            <span className="relative z-10 group-hover:text-white transition-colors duration-300">{t('hero.simulatorBtn')}</span>
           </button>
 
           <button
             onClick={() => document.getElementById('timeline')?.scrollIntoView({ behavior: 'smooth' })}
             className="group px-8 py-4 rounded-full font-bold text-slate-900 dark:text-white bg-white/50 dark:bg-white/5 backdrop-blur-md border border-slate-200 dark:border-white/10 hover:bg-white/80 dark:hover:bg-white/10 transition-all duration-300 shadow-xl w-full sm:w-auto"
           >
-            Explore Timeline
+            {t('hero.timelineBtn')}
           </button>
         </motion.div>
       </motion.div>
@@ -110,7 +111,7 @@ export default function Hero() {
         transition={{ delay: 1.5, duration: 1 }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
       >
-        <span className="text-xs uppercase tracking-widest text-slate-500 font-bold">Discover</span>
+        <span className="text-xs uppercase tracking-widest text-slate-500 font-bold">{t('hero.scrollText')}</span>
         <motion.div
           animate={{ y: [0, 10, 0] }}
           transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}

@@ -1,32 +1,35 @@
 import { motion } from 'framer-motion';
 import { UserCheck, ClipboardList, CheckCircle } from 'lucide-react';
 import { cn } from '../lib/utils';
-
-const steps = [
-  { 
-    icon: UserCheck, 
-    title: 'Register', 
-    desc: 'Register yourself using valid voter ID documents.', 
-    color: 'text-blue-500', 
-    bg: 'from-blue-500/20 to-cyan-500/20' 
-  },
-  { 
-    icon: ClipboardList, 
-    title: 'Check Booth', 
-    desc: 'Find your polling station online before election day.', 
-    color: 'text-violet-500', 
-    bg: 'from-violet-500/20 to-purple-500/20' 
-  },
-  { 
-    icon: CheckCircle, 
-    title: 'Cast Vote', 
-    desc: 'Use EVM or ballot paper to securely cast your vote.', 
-    color: 'text-emerald-500', 
-    bg: 'from-emerald-500/20 to-green-500/20' 
-  }
-];
+import { useLanguage } from '../contexts/LanguageContext';
 
 export default function VotingSteps() {
+  const { t } = useLanguage();
+
+  const steps = [
+    { 
+      icon: UserCheck, 
+      title: t('steps.s1_title'), 
+      desc: t('steps.s1_desc'), 
+      color: 'text-blue-500', 
+      bg: 'from-blue-500/20 to-cyan-500/20' 
+    },
+    { 
+      icon: ClipboardList, 
+      title: t('steps.s2_title'), 
+      desc: t('steps.s2_desc'), 
+      color: 'text-violet-500', 
+      bg: 'from-violet-500/20 to-purple-500/20' 
+    },
+    { 
+      icon: CheckCircle, 
+      title: t('steps.s3_title'), 
+      desc: t('steps.s3_desc'), 
+      color: 'text-emerald-500', 
+      bg: 'from-emerald-500/20 to-green-500/20' 
+    }
+  ];
+
   return (
     <section id="voting" className="py-32 px-6 max-w-7xl mx-auto">
       <motion.div
@@ -36,11 +39,9 @@ export default function VotingSteps() {
         className="text-center mb-24"
       >
         <h2 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white mb-6">
-          How Voting <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-500 to-pink-500">Works</span>
+          {t('steps.title')}
         </h2>
-        <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-          Your path to the ballot box is simple. Follow these three steps to make your voice heard.
-        </p>
+        <div className="w-24 h-1 bg-gradient-to-r from-violet-500 to-pink-500 mx-auto rounded-full mb-6" />
       </motion.div>
 
       <div className="grid md:grid-cols-3 gap-8">

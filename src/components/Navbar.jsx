@@ -1,22 +1,35 @@
 import { useState, useEffect } from 'react';
-import { Sun, Moon, Menu, X } from 'lucide-react';
+import { Sun, Moon, Menu, X, Globe, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../lib/utils';
+import { useLanguage } from '../contexts/LanguageContext';
+
+const navItems = [
+  { name: 'Home', id: 'home', tKey: 'home' },
+  { name: 'Impact', id: 'impact', tKey: 'impact' },
+  { name: 'Stats', id: 'stats', tKey: 'stats' },
+  { name: 'Timeline', id: 'timeline', tKey: 'timeline' },
+  { name: 'How to Vote', id: 'voting', tKey: 'howToVote' },
+  { name: 'Quiz', id: 'quiz', tKey: 'quiz' },
+  { name: 'Mock EVM', id: 'evm', tKey: 'mockEVM' },
+];
+
+const languages = [
+  { code: 'en', label: 'English' },
+  { code: 'hi', label: 'हिंदी' },
+  { code: 'te', label: 'తెలుగు' },
+  { code: 'ta', label: 'தமிழ்' }
+];
 
 export default function Navbar({ isDarkMode, setIsDarkMode }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
 
-  const navItems = [
-    { name: 'Home', id: 'home' },
-    { name: 'Impact', id: 'impact' },
-    { name: 'Stats', id: 'stats' },
-    { name: 'Timeline', id: 'timeline' },
-    { name: 'How to Vote', id: 'voting' },
-    { name: 'Quiz', id: 'quiz' },
-    { name: 'Mock EVM', id: 'evm' },
-  ];
+  const [langMenuOpen, setLangMenuOpen] = useState(false);
+  const { language, setLanguage, t } = useLanguage();
+
+  
 
   useEffect(() => {
     const handleScroll = () => {
@@ -87,13 +100,58 @@ export default function Navbar({ isDarkMode, setIsDarkMode }) {
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
                 )}
-                <span className="relative z-10">{item.name}</span>
+                <span className="relative z-10">{t(`nav.${item.tKey}`)}</span>
               </button>
             ))}
           </div>
 
           {/* Controls */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
+            
+            {/* Language Selector */}
+            <div className="relative">
+              <button
+                onClick={() => setLangMenuOpen(!langMenuOpen)}
+                className="flex items-center gap-1.5 p-2 px-3 rounded-full bg-white/50 dark:bg-white/5 hover:bg-white/80 dark:hover:bg-white/10 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 transition-all shadow-sm"
+                aria-label="Change Language"
+              >
+                <Globe size={16} />
+                <span className="text-sm font-bold uppercase hidden sm:block">{language}</span>
+                <ChevronDown size={14} className={cn("transition-transform duration-300", langMenuOpen ? "rotate-180" : "")} />
+              </button>
+
+              <AnimatePresence>
+                {langMenuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute right-0 mt-2 w-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-200 dark:border-white/10 overflow-hidden py-2"
+                  >
+                    {languages.map((lang) => (
+                      <button
+                        key={lang.code}
+                        onClick={() => {
+                          setLanguage(lang.code);
+                          setLangMenuOpen(false);
+                        }}
+                        className={cn(
+                          "w-full text-left px-4 py-2 text-sm transition-colors flex items-center justify-between",
+                          language === lang.code 
+                            ? "bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold" 
+                            : "hover:bg-slate-50 dark:hover:bg-white/5 text-slate-700 dark:text-slate-300"
+                        )}
+                      >
+                        {lang.label}
+                        {language === lang.code && <div className="w-2 h-2 rounded-full bg-blue-500" />}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
               className="p-2.5 rounded-full bg-white/50 dark:bg-white/5 hover:bg-white/80 dark:hover:bg-white/10 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 transition-all shadow-sm hover:scale-105 active:scale-95"
@@ -145,7 +203,7 @@ export default function Navbar({ isDarkMode, setIsDarkMode }) {
                     activeSection === item.id ? "text-pink-500" : "text-slate-800 dark:text-white"
                   )}
                 >
-                  {item.name}
+                  {t(`nav.${item.tKey}`)}
                 </motion.button>
               ))}
             </div>
