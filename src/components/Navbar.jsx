@@ -62,6 +62,8 @@ export default function Navbar({ isDarkMode, setIsDarkMode }) {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        role="navigation"
+        aria-label="Main navigation"
         className={cn(
           "fixed top-0 inset-x-0 z-50 transition-all duration-500",
           isScrolled 
@@ -70,8 +72,15 @@ export default function Navbar({ isDarkMode, setIsDarkMode }) {
         )}
       >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          {/* Logo */}
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => scrollTo('home')}>
+          {/* Logo — click to scroll to top */}
+          <div
+            className="flex items-center gap-2 cursor-pointer"
+            onClick={() => scrollTo('home')}
+            role="button"
+            tabIndex={0}
+            aria-label="Go to homepage"
+            onKeyDown={(e) => e.key === 'Enter' && scrollTo('home')}
+          >
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-violet-600 flex items-center justify-center shadow-lg shadow-pink-500/30">
               <span className="text-white font-black text-xl">V</span>
             </div>
@@ -81,13 +90,16 @@ export default function Navbar({ isDarkMode, setIsDarkMode }) {
           </div>
 
           {/* Desktop Nav */}
-          <div className="hidden lg:flex items-center gap-1 bg-white/40 dark:bg-slate-800/40 backdrop-blur-md px-2 py-1 rounded-full border border-white/40 dark:border-white/10 shadow-inner">
+          <div className="hidden lg:flex items-center gap-1 bg-white/40 dark:bg-slate-800/40 backdrop-blur-md px-2 py-1 rounded-full border border-white/40 dark:border-white/10 shadow-inner" role="list">
             {navItems.map((item) => (
               <button
                 key={item.id}
+                role="listitem"
                 onClick={() => scrollTo(item.id)}
+                aria-current={activeSection === item.id ? 'page' : undefined}
+                aria-label={`Navigate to ${t(`nav.${item.tKey}`)} section`}
                 className={cn(
-                  "relative px-4 py-2 rounded-full text-sm font-medium transition-colors",
+                  "relative px-4 py-2 rounded-full text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500/50",
                   activeSection === item.id 
                     ? "text-slate-900 dark:text-white" 
                     : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-white/20 dark:hover:bg-white/5"
@@ -173,9 +185,12 @@ export default function Navbar({ isDarkMode, setIsDarkMode }) {
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2.5 rounded-full bg-white/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300"
+              aria-label={mobileMenuOpen ? 'Close mobile menu' : 'Open mobile menu'}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-menu"
+              className="lg:hidden p-2.5 rounded-full bg-white/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500/50"
             >
-              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              {mobileMenuOpen ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
             </button>
           </div>
         </div>
@@ -185,12 +200,15 @@ export default function Navbar({ isDarkMode, setIsDarkMode }) {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
+            id="mobile-menu"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
+            role="dialog"
+            aria-label="Mobile navigation menu"
             className="fixed inset-0 z-40 bg-white/95 dark:bg-slate-950/95 backdrop-blur-3xl lg:hidden pt-24 px-6"
           >
-            <div className="flex flex-col gap-4">
+            <nav aria-label="Mobile navigation" className="flex flex-col gap-4">
               {navItems.map((item, i) => (
                 <motion.button
                   initial={{ opacity: 0, x: -20 }}
@@ -198,15 +216,16 @@ export default function Navbar({ isDarkMode, setIsDarkMode }) {
                   transition={{ delay: i * 0.05 }}
                   key={item.id}
                   onClick={() => scrollTo(item.id)}
+                  aria-current={activeSection === item.id ? 'page' : undefined}
                   className={cn(
-                    "text-left text-2xl font-bold py-4 border-b border-slate-200 dark:border-white/5",
+                    "text-left text-2xl font-bold py-4 border-b border-slate-200 dark:border-white/5 focus-visible:outline-none focus-visible:text-pink-500",
                     activeSection === item.id ? "text-pink-500" : "text-slate-800 dark:text-white"
                   )}
                 >
                   {t(`nav.${item.tKey}`)}
                 </motion.button>
               ))}
-            </div>
+            </nav>
           </motion.div>
         )}
       </AnimatePresence>

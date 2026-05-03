@@ -15,7 +15,7 @@ export default function Hero() {
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
 
   return (
-    <section ref={ref} id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+    <section ref={ref} id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20" aria-labelledby="hero-heading">
       {/* Dynamic Background Elements */}
       <div className="absolute inset-0 z-0">
         <motion.div 
@@ -64,6 +64,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          id="hero-heading"
           className="text-6xl md:text-8xl font-black mb-8 tracking-tighter leading-tight"
         >
           <span className="text-slate-900 dark:text-white">{t('hero.titlePart1')} </span>
@@ -90,7 +91,8 @@ export default function Hero() {
         >
           <button
             onClick={() => document.getElementById('evm')?.scrollIntoView({ behavior: 'smooth' })}
-            className="group relative px-8 py-4 rounded-full font-bold text-white bg-slate-900 dark:bg-white dark:text-slate-900 overflow-hidden shadow-2xl hover:scale-105 transition-transform duration-300 w-full sm:w-auto"
+            aria-label="Launch EVM Simulator"
+            className="group relative px-8 py-4 rounded-full font-bold text-white bg-slate-900 dark:bg-white dark:text-slate-900 overflow-hidden shadow-2xl hover:scale-105 transition-transform duration-300 w-full sm:w-auto focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-pink-500/50"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-pink-500 to-violet-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <span className="relative z-10 group-hover:text-white transition-colors duration-300">{t('hero.simulatorBtn')}</span>
@@ -98,7 +100,8 @@ export default function Hero() {
 
           <button
             onClick={() => document.getElementById('timeline')?.scrollIntoView({ behavior: 'smooth' })}
-            className="group px-8 py-4 rounded-full font-bold text-slate-900 dark:text-white bg-white/50 dark:bg-white/5 backdrop-blur-md border border-slate-200 dark:border-white/10 hover:bg-white/80 dark:hover:bg-white/10 transition-all duration-300 shadow-xl w-full sm:w-auto"
+            aria-label="Explore the Election Timeline"
+            className="group px-8 py-4 rounded-full font-bold text-slate-900 dark:text-white bg-white/50 dark:bg-white/5 backdrop-blur-md border border-slate-200 dark:border-white/10 hover:bg-white/80 dark:hover:bg-white/10 transition-all duration-300 shadow-xl w-full sm:w-auto focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-slate-400/50"
           >
             {t('hero.timelineBtn')}
           </button>

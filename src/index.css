@@ -6,6 +6,40 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
+/* ============================================================
+   Global Focus Visible Styles (Accessibility)
+   Ensures ALL interactive elements show a clear focus ring
+   when navigated via keyboard (Tab key).
+   ============================================================ */
+
+/* Remove default outline — we control it ourselves */
+*:focus {
+  outline: none;
+}
+
+/* Show focus ring ONLY for keyboard navigation (not mouse clicks) */
+*:focus-visible {
+  outline: 2px solid hsl(340 82% 60%);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================
+   Custom Animations
+   ============================================================ */
+
 @theme {
   --animate-gradient-x: gradient-x 15s ease infinite;
 }
@@ -26,4 +60,9 @@ body {
   100% {
     background-position: 0 0;
   }
+}
+
+/* Smooth scrolling for anchor navigation */
+html {
+  scroll-behavior: smooth;
 }
